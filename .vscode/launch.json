@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/63.不同路径-ii.js"
+            "program": "${workspaceFolder}/64.最小路径和.js"
         }
     ]
 }
