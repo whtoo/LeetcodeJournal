@@ -40,7 +40,18 @@
  * @return {number}
  */
 var findUnsortedSubarray = function(nums) {
-    
+    let n = nums.length
+    let r = 0
+    let l = nums.length
+    for(let i = 0; i < n-1;i++){
+        for(let j = i+1; j < n;j++){
+            if(nums[i] > nums[j]){
+                l = Math.min(i,l)
+                r = Math.max(j,r)
+            }
+        }
+    }
+    return r - l < 0 ? 0 : r - l + 1;
 };
 // @lc code=end
 
