@@ -44,10 +44,24 @@
  * @return {number}
  */
 var largestRectangleArea = function (heights) {
-    if(heights.length == 1) return heights[0]
-    
-
-    return max
+    return calculateArea(heights,0,heights.length - 1)
 };
+/**
+ * @param {number[]} heights
+ * @param {number} start
+ * @param {number} end
+ * @return {number}
+ */
+var calculateArea = function(heights,start,end){
+    if(start > end) return 0
+
+    let minindex = start
+    for(let i = start; i <= end;i++){
+        if(heights[minindex] > heights[i]) minindex = i
+    }
+
+    return Math.max(heights[minindex] * (end - start + 1), Math.max(calculateArea(heights, start, minindex - 1), calculateArea(heights, minindex + 1, end)))
+}
 // @lc code=end
-largestRectangleArea([4,2])
+let q = largestRectangleArea([4,2,3,5,6,8,7])
+console.log(q)
