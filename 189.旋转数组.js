@@ -43,41 +43,45 @@
  */
 
 // @lc code=start
+
 /**
  * @param {number[]} nums
  * @param {number} k
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 var rotate = function(nums, k) {
-        let length = nums.length;
-        // 首元素在新元素中的位置
-        // 等效移动距离的真实偏移数目
-        let offset = k % length;
-        let buffer = [];
-        if(offset == 0){
-            // No change!
-            return
-        }
-        /// init buffer
-        for(let k = 0; k < offset;k++){
-            buffer.push(nums[k]);
-        }
+    var n = nums.length;
+    var mid = k % n;
+    var reverse = function(nums,start,end){
+        var tmp;
+        while(start < end){
+            tmp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = tmp;
+            start++;
+            end--;
+        }    
+    }
 
-        for(var i = 0; i < length; i++){
-            let target = (i + offset);
-            if(target < length){
-                // 正向移动
-                // buffer已满
-                buffer.push(nums[target]);
-                nums[target] = buffer.shift();
-            } else {
-                /// 负向移动
-                /// 只需要将buffer里面的元素进行
-                target = target % length;
-                nums[target] = buffer.shift();
-            }
-        }
-};
+    // 1. 整体反转(Ring)
+    //           a1
+    //     an         a2
+    //    an-1          a3
+    //   an-2         ...
+    //    an -3       ak-2
+    //      ...       ak-1
+    ///          ak
+    // a1 a2 ... ak ... an
+    // an an-1 ... ak ... a1
+    reverse(nums,0,n-1);
+    // 2. 反转 0..mid-1
+    // ak+1 ak+2 ... an ak ... a1
+    reverse(nums,0,mid-1);
+    // 3. 反转 mid...n-1
+    // ak+1 ak+2 ... an a1 a2 .. ak
+    reverse(nums,mid,n-1);
+
+}
 // @lc code=end
 
 var nums = [1,2,3];
