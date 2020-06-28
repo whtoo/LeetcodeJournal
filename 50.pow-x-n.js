@@ -57,7 +57,7 @@ var myPow = function (x, n) {
     }
 
     /// 中间结果
-    let even = n % 2 
+    let even = n & 1 
     let flag = 1
     if(n < 0){
         n = Math.abs(n)
