@@ -45,7 +45,17 @@
  * @return {TreeNode}
  */
 var sortedArrayToBST = function(nums) {
+    // 空树直接返回Null
+    if(!nums.length) return null
+    // 非空,先构造根节点
+    const root = new TreeNode(null)
+    if(nums.length > 1){
+        root.left = sortedArrayToBST(nums.splice(0,nums.length / 2))
+    }
+    root.val = nums[0]
+    root.right = sortedArrayToBST(nums.splice(1))
 
+    return root
 };
 // @lc code=end
 
