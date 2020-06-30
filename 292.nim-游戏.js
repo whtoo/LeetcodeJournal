@@ -33,8 +33,6 @@
  * @return {boolean}
  */
 var canWinNim = function(x) {
-    if(x < 4) return true
-    return !(canWinNim(x - 1) || canWinNim(x-2) || canWinNim(x-3))
-};
+    return x % 4 != 0
+}
 // @lc code=end
-
