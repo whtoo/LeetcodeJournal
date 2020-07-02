@@ -62,20 +62,52 @@ var rightSideView = function(root) {
     // return arr
     
     // BFS
+    // if(!root) return []
+    // let queue = [root]
+    // let arr= []
+    // while(queue.length > 0){
+    //     let len = queue.length
+    //     while(len){
+    //         let node = queue.shift()
+    //         if(len == 1) arr.push(node.val)
+    //         if(node.left) queue.push(node.left)
+    //         if(node.right) queue.push(node.right)
+    //         len--
+    //     }
+    // }
+    // return arr
+
+    // 层次遍历
     if(!root) return []
     let queue = [root]
-    let arr= []
+    let ret = []
+    let visitedLevelCnt = 0
+    let curLevelCnt = 1
+    let nextLevelCnt = 0
+
     while(queue.length > 0){
-        let len = queue.length
-        while(len){
-            let node = queue.shift()
-            if(len == 1) arr.push(node.val)
-            if(node.left) queue.push(node.left)
-            if(node.right) queue.push(node.right)
-            len--
+        let node = queue.shift()
+        visitedLevelCnt++
+
+        if(node.left) {
+            queue.push(node.left)
+            nextLevelCnt++
+        }
+        if(node.right){
+            queue.push(node.right)
+            nextLevelCnt++
+        }
+
+        if(visitedLevelCnt == curLevelCnt){
+            // 压入每一层最后访问的元素
+            ret.push(node.val)
+            curLevelCnt = nextLevelCnt
+            visitedLevelCnt = 0
+            nextLevelCnt = 0
         }
     }
-    return arr
+
+    return ret
 };
 
 // @lc code=end
