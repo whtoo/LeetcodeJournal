@@ -60,9 +60,17 @@
  * @return {number}
  */
 var minDiffInBST = function(root) {
-    const dfs = (root,val){
-        
+    let ans = Number.MAX_SAFE_INTEGER
+    let prev = null
+    const dfs = (node) => {
+        if(node == null) return
+        dfs(node.left)
+        if(prev != null) ans = Math.min(ans,node.val - prev)
+        prev = node.val
+        dfs(node.right)
     }
+    dfs(root)
+    return ans
 };
 // @lc code=end
 
