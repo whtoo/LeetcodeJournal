@@ -52,7 +52,14 @@
  * @return {number[][]}
  */
 var flipAndInvertImage = function(A) {
+    for(let r = 0; r < A.length;r++){
+        A[r] = A[r].reverse()
+        for(let c = 0; c < A[0].length;c++){
+            A[r][c] = 1 ^ A[r][c]
+        }
+    }
 
+    return A
 };
 // @lc code=end
 
