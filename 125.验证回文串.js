@@ -41,7 +41,8 @@
      return (x <= 57 && x >= 48) || (x <= 90 && x >= 65) || (x <= 122 && x >= 97);
  }
 
-var isPalindrome = function(str) {
+var isPalindrome = function(s) {
+    // 修改但是快
     const s = str.replace(/[^0-9a-zA-Z]/g, '').toLowerCase();
     const n = s.length;
     let left = 0;
@@ -54,6 +55,22 @@ var isPalindrome = function(str) {
       right--;
     }
     return true
+
+    // 无额外空间需求,且不修改原字符串
+    // const regex = /[0-9a-zA-Z]/
+    // for(let i=0,j = s.length-1;i < j;){
+    //     while(!regex.test(s[i])){
+    //         i++
+    //     } 
+    //     while(!regex.test(s[j])){
+    //         j--
+    //     } 
+    //     if(i >= j) break
+    //     if(s[i].toLowerCase() !== s[j].toLowerCase()) return false
+    //     else { i++;j-- }
+    // }
+    
+    return true
 }
 // @lc code=end
-console.log(isPalindrome("A man, a plan, a canal: Panama"))
+console.log(isPalindrome("ab_a"))
