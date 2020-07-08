@@ -49,7 +49,98 @@
  * @return {void} Do not return anything, modify board in-place instead.
  */
 var solveSudoku = function(board) {
-    
+    new Sudoku(board).solve()
 };
+
+class Sudoku {
+    constructor(board){
+        this.board = board
+        this.rows = new Array(9).fill(0)
+        this.columns = new Array(9).fill(0)
+        this.boxs = Array.from({length:3}, ()=>new Array(3).fill(0))
+        this.emptyCells = new Set()
+    }
+
+    solve() {
+        for(let i = 0; i < 9;i++){
+            for(let j = 0;j < 9;j++){
+                let num = this.board[i][j]
+                if(num !== "."){
+                    const sign = 1 << (Number(num) - 1)
+                    this.rows[i] |= sign
+                    this.columns[j] |= sign
+                    this.boxs[Math.floor(i / 3)][Math.floor(j /3)] |= sign
+                } else{
+                    this.emptyCells.add((i << 4) | j)
+                }
+            }
+        }
+        return this.fillNext()
+    }
+
+    fillNext(){
+        let cellInfo = this.getEmptyCell()
+        if(cellInfo === null){
+            return true
+        }
+        let [i,j,possible] = cellInfo
+        while(possible){
+            const sign = ((possible -1) & possible ^ possible)
+            this.fillCell(i,j,sign)
+            if(this.fillNext()){
+                return true
+            } else {
+                possible ^= sign
+                this.cleanCell(i,j,sign)
+            }
+        }
+    }
+    getEmptyCell() {
+        let min = 10;
+        let cellInfo = null;
+        for (const id of this.emptyCells) {
+            const i = id >> 4, j = id & 0b1111;
+            const possible = this.getCellPossible(i, j);
+            const count = this.countPossible(possible);
+            if (min > count) {
+                //挑选可能性最少的格子，理论上可减少犯错回溯
+                cellInfo = [i, j, possible];
+                min = count;
+            }
+        }
+        return cellInfo;
+    }
+    countPossible(possible) {
+        //计算二进制 1 的数量
+        let count = 0;
+        while (possible) {
+            possible &= (possible - 1);
+            count++;
+        }
+        return count;
+    }
+    fillCell(i, j, sign) {
+        //对应位变成1，标记占用
+        this.rows[i] |= sign;
+        this.columns[j] |= sign;
+        this.boxs[Math.floor(i / 3)][Math.floor(j / 3)] |= sign;
+        //填入空格
+        this.emptyCells.delete((i << 4) | j);
+        this.board[i][j] = String(Math.log2(sign) + 1);
+    }
+    cleanCell(i, j, sign) {
+        //对应位变为0，清除占用
+        this.rows[i] &= ~sign;
+        this.columns[j] &= ~sign;
+        this.boxs[Math.floor(i / 3)][Math.floor(j / 3)] &= ~sign;
+        //清空格子
+        this.emptyCells.add((i << 4) | j)
+        this.board[i][j] = ".";
+    }
+    getCellPossible(i, j) {
+        //获取格子可能的取值，二进制1表示可选
+        return (this.rows[i] | this.columns[j] | this.boxs[Math.floor(i / 3)][Math.floor(j / 3)]) ^ 0b111111111;
+    }
+}
 // @lc code=end
 
