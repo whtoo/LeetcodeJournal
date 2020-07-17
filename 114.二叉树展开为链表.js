@@ -55,30 +55,18 @@
  * @param {TreeNode} root
  * @return {void} Do not return anything, modify root in-place instead.
  */
+var lastVistedNode = null
 var flatten = function(root) {
-    helper(root)
+    if(root == null) return
+    let right = root.right
+    if(lastVistedNode != null){
+        lastVistedNode.left = null
+        lastVistedNode.right = root
+    } 
+    lastVistedNode = root
+    flatten(root.left)
+    flatten(right)
 };
-function helper(root){
-    if(root == null){
-        return null
-    }
 
-    var temp
-    if(root.left!=null){
-        temp = root.right
-        root.right = root.left
-        root.left = null
-        var right = findRight(root.right)
-        right.right = temp
-    }
-    return helper(root.right)
-}
-
-function findRight(root){
-    if(root.right == null){
-        return root
-    }
-    return findRight(root.right)
-}
 // @lc code=end
 
