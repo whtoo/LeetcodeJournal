@@ -60,14 +60,26 @@
  * @return {boolean}
  */
 var isValidBST = function(root) {
-    const helper = (root,lower,upper) => {
-        if(root == null) return true
-        if(root.val <= lower || root.val >= upper) return false
-        return helper(root.left,lower,root.val) && helper(root.right,root.val,upper)
+    if(root == null || (root.left == null && root.right == null)) return true
+    const isValidBSTInner = function(node,lower,upper){
+        if(node == null) return true
+        if(node.val <= lower || node.val >= upper) return false
+        return isValidBSTInner(node.left,lower,node.val) && isValidBSTInner(node.right,node.val,upper)
     }
-    return helper(root,Number.MIN_SAFE_INTEGER,Number.MAX_SAFE_INTEGER)
+    return isValidBSTInner(root,Number.MIN_SAFE_INTEGER,Number.MAX_SAFE_INTEGER)
 };
 
 
 // @lc code=end
+function TreeNode(val) {
+    this.val = val;
+    this.left = this.right = null;
+}
 
+let root = new TreeNode(2)
+
+let l = new TreeNode(1)
+let r = new TreeNode(3)
+root.left = l
+root.right = r
+console.log(isValidBST(root))
