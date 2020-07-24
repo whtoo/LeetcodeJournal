@@ -49,7 +49,99 @@
  * @return {number[][]}
  */
 var getSkyline = function(buildings) {
+    const n = buildings.length
+    let output = new Array()
+    if(n == 0) return output
+    if(n == 1){
+        let xStart = buildings[0][0]
+        let xEnd = buildings[0][1]
+        let y = buildings[0][2]
 
+        output.push([xStart,y])
+        output.push([xEnd,0])
+
+        return output
+    }
+
+    let leftSkyline, rightSkyline;
+    const mid = Math.floor(n / 2)
+    leftSkyline = getSkyline(buildings.slice(0,mid))
+    rightSkyline = getSkyline(buildings.slice(mid,n))
+
+    return mergeSkylines(leftSkyline,rightSkyline)
 };
-// @lc code=end
+/**
+ * 
+ * @param {number[][]} left 
+ * @param {number[][]} right 
+ * @return {number[][]}
+ */
+function mergeSkylines(left,right){
+    let nL = left.length, nR = right.length;
+    let pL = 0,pR = 0;
+    let currY = 0, leftY = 0,rightY = 0;
+    let x = 0,maxY = 0;
+    let output = new Array()
 
+    while(pL < nL && pR < nR){
+        let pointL = left[pL];
+        let pointR = right[pR];
+        if(pointL[0] < pointR[0]){
+            x = pointL[0]
+            leftY = pointL[1]
+            pL++
+        } else {
+            x = pointR[0]
+            rightY = pointR[1]
+            pR++
+        }
+        maxY = Math.max(leftY,rightY);
+        if(currY !== maxY){
+            updateOutput(output,x,maxY)
+            currY = maxY
+        }
+    }
+
+    appendSkyline(output,left,pL,nL,currY);
+    appendSkyline(output,right,pR,nR,currY);
+
+    return output;
+}   
+/**
+ * 
+ * @param {number[][]} output 
+ * @param {number} x 
+ * @param {number} y 
+ */
+function updateOutput(output,x,y){
+    if(output.length == 0 || output[output.length-1][0] != x){
+        output.push([x,y])
+    } else {
+        output[output.length - 1][1] = y
+    }
+}
+/**
+ * 
+ * @param {number[][]} output 
+ * @param {number[][]} skyline 
+ * @param {number} p 
+ * @param {number} n 
+ * @param {number} currY 
+ */
+function appendSkyline(output,skyline,p,n,currY){
+    while(p < n){
+        let point = skyline[p]
+        const x = point[0]
+        const y = point[1]
+        p++
+
+        if(currY !== y){
+            updateOutput(output,x,y)
+            currY = y
+        }
+    }
+}
+// @lc code=end
+let ret = getSkyline([[2,9,10],[3,7,15],[5,12,12],[15,20,10],[19,24,8]]
+    )
+console.log(ret)
