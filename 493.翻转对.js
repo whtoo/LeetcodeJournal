@@ -78,7 +78,7 @@ var reversePairs = function(nums) {
         }
         return l + 1;
     }
-    let sortArr = nums.slice().sort((a,b) => a - b);
+    let sortArr = nums.map(val=>val).sort((a,b) => a - b);
     for(let i = 0;i < nums.length;i++){
         count += getSum(count_i(2 * nums[i] + 1));
         update(count_i(nums[i]));

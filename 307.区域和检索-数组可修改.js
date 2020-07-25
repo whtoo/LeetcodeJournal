@@ -36,22 +36,46 @@
  */
 
 // @lc code=start
+function lowBit(x){
+    return x & -x
+}
 /**
  * @param {number[]} nums
  */
 var NumArray = function(nums) {
-
+    this._nums = nums.map(val=>val)
+    this._accArr = new Array(nums.length+1).fill(0)
+    this.n = nums.length
+    for(const [idx,n] of nums.entries()){
+        this.add(idx+1,n)
+    }
 };
-
+NumArray.prototype.add = function(i, val) {
+    
+   while(i <= this.n){
+       this._accArr[i] += val;
+       i += lowBit(i)
+   }
+};
 /** 
  * @param {number} i 
  * @param {number} val
  * @return {void}
  */
 NumArray.prototype.update = function(i, val) {
-
+    this.add(i+1,val - this._nums[i])
+    this._nums[i] = val
 };
 
+NumArray.prototype.sum = function(x){
+    let ret = 0
+    if(x == 0) return ret
+    while(x > 0){
+        ret += this._accArr[x];
+        x -= lowBit(x)
+    }
+    return ret
+}
 /** 
  * @param {number} i 
  * @param {number} j
@@ -59,8 +83,8 @@ NumArray.prototype.update = function(i, val) {
  */
 NumArray.prototype.sumRange = function(i, j) {
 
-};
-
+    return this.sum(j+1) - this.sum(i) 
+}
 /**
  * Your NumArray object will be instantiated and called as such:
  * var obj = new NumArray(nums)
@@ -69,3 +93,8 @@ NumArray.prototype.sumRange = function(i, j) {
  */
 // @lc code=end
 
+var nums = [-1]
+var obj = new NumArray(nums)
+console.warn(obj.sumRange(0,0))
+obj.update(0,1)
+console.warn(obj.sumRange(0,0))
