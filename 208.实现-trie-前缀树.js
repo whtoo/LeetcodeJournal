@@ -41,7 +41,8 @@
  * Initialize your data structure here.
  */
 var Trie = function() {
-
+    this.next = new Array(26).fill(null);
+    this.is_string = false;
 };
 
 /**
@@ -50,7 +51,13 @@ var Trie = function() {
  * @return {void}
  */
 Trie.prototype.insert = function(word) {
-
+    let root = this;
+    for(const ch of word){
+        const idx = ch.charCodeAt(0) - 'a'.charCodeAt(0);
+        if(root.next[idx] == null) root.next[idx] = new Trie();
+        root = root.next[idx];
+    }
+    root.is_string = true;
 };
 
 /**
@@ -59,7 +66,13 @@ Trie.prototype.insert = function(word) {
  * @return {boolean}
  */
 Trie.prototype.search = function(word) {
-
+    let root = this;
+    for(const ch of word){
+        const idx = ch.charCodeAt(0) - 'a'.charCodeAt(0);
+        if(root.next[idx] == null) return false;
+        root = root.next[idx];
+    }
+    return root.is_string;
 };
 
 /**
@@ -68,7 +81,13 @@ Trie.prototype.search = function(word) {
  * @return {boolean}
  */
 Trie.prototype.startsWith = function(prefix) {
-
+    let root = this;
+    for(const ch of prefix){
+        const idx = ch.charCodeAt(0) - 'a'.charCodeAt(0);
+        if(root.next[idx] == null) return false;
+        root = root.next[idx];
+    }
+    return true;
 };
 
 /**
@@ -80,3 +99,11 @@ Trie.prototype.startsWith = function(prefix) {
  */
 // @lc code=end
 
+let trie = new Trie();
+
+trie.insert("apple");
+console.log(trie.search("apple"));   // 返回 true
+console.log(trie.search("app"));     // 返回 false
+console.log(trie.startsWith("app")); // 返回 true
+trie.insert("app");   
+console.log(trie.search("app"));     // 返回 true
