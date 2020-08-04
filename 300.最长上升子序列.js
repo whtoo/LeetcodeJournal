@@ -38,27 +38,44 @@
  * @return {number}
  */
 var lengthOfLIS = function(nums) {
-    if(nums.length == 0) return 0
-   let lstOfLIS = [Number.MAX_SAFE_INTEGER]
-    let maxLenOfLIS = 0
-    for(const ele of nums) {
-        if(ele > lstOfLIS[lstOfLIS.length -1]) {
-            lstOfLIS.push(ele)
-        } else if(ele <= lstOfLIS[0]) {
-            maxLenOfLIS = Math.max(maxLenOfLIS,lstOfLIS.length)
-            lstOfLIS[0] = ele
-        } else if( lstOfLIS[0] < ele < lstOfLIS[lstOfLIS.length-1]){
-            /// 注意这里修改为二叉搜索树(或者二分插入)即可达到O(nlgn)
-            let idx = lstOfLIS.findIndex((val)=> val >= ele)
-            if(idx != -1) {
-                lstOfLIS[idx] = ele
-            }
-            continue
-        }
+    if(nums.length == 0){
+        return 0
     }
-    maxLenOfLIS = Math.max(maxLenOfLIS,lstOfLIS.length)
-    return maxLenOfLIS
+    let dp = new Array(nums.length).fill(0)
+    dp[0] = 1
+    let maxans = 1;
+    for(let i = 1;i < dp.length;++i){
+        let maxval = 0
+        for(let j = 0; j < i;j++){
+            if(nums[i] > nums[j]){
+                maxval = Math.max(maxval,dp[j])
+            }
+        }
+        dp[i] = maxval + 1;
+        maxans = Math.max(maxans,dp[i]);
+    }
+    return maxans;
+//     if(nums.length == 0) return 0
+//    let lstOfLIS = [Number.MAX_SAFE_INTEGER]
+//     let maxLenOfLIS = 0
+//     for(const ele of nums) {
+//         if(ele > lstOfLIS[lstOfLIS.length -1]) {
+//             lstOfLIS.push(ele)
+//         } else if(ele <= lstOfLIS[0]) {
+//             maxLenOfLIS = Math.max(maxLenOfLIS,lstOfLIS.length)
+//             lstOfLIS[0] = ele
+//         } else if( lstOfLIS[0] < ele < lstOfLIS[lstOfLIS.length-1]){
+//             /// 注意这里修改为二叉搜索树(或者二分插入)即可达到O(nlgn)
+//             let idx = lstOfLIS.findIndex((val)=> val >= ele)
+//             if(idx != -1) {
+//                 lstOfLIS[idx] = ele
+//             }
+//             continue
+//         }
+//     }
+//     maxLenOfLIS = Math.max(maxLenOfLIS,lstOfLIS.length)
+//     return maxLenOfLIS
 };
 // @lc code=end
 
-lengthOfLIS([3,5,6,2,5,4,19,5,6,7,12])
+console.log(lengthOfLIS([3,5,6,2,5,4,19,5,6,7,12]))
