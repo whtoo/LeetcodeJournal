@@ -1,4 +1,4 @@
-/*
+./*
  * @lc app=leetcode.cn id=1455 lang=javascript
  *
  * [1455] 检查单词是否为句中其他单词的前缀
