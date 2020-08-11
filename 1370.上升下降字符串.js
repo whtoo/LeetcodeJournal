@@ -11,28 +11,27 @@
  */
 var sortString = function(s) {
     let arr = new Array(26).fill(0)
-    let cnt = 0
     let key = []
     for(const c of s){
-        if(!key.includes(c.charCodeAt(0) - 97)) key.push(c.charCodeAt(0)-97)
         arr[c.charCodeAt(0) - 97]++
-        cnt++
     }
-    key.sort((a,b)=>a-b)
-    let cur = 0;// Current alpha order
     let result = ""
-    let next = 0; // Current key's position
-    let clockwise = true;
-    while(cnt > 0){
-        if(clockwise){
-            if(next < key.length){
-                next++
-            }
-        } else {
-            if(next >= 0){
-                next--
-            }
+    const hasChar = function(arr){
+        for(let i =0;i < 26;++i){
+            if(arr[i] > 0) return true
         }
+        return false
+    } 
+    const appendChar = function(p){
+        if(arr[p]){
+            --arr[p];
+            result += String.fromCharCode(p+97)
+        }
+    }
+    while(true){
+      if(!hasChar(arr)) break
+      for(let i = 0;i < 26;++i) appendChar(i)
+      for(let i = 25;i >= 0;--i) appendChar(i)
     }
     return result;
 };
