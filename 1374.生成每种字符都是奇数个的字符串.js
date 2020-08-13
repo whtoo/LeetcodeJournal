@@ -10,11 +10,7 @@
  * @return {string}
  */
 var generateTheString = function(n) {
-    let dp = new Array(n).fill(0)
-    dp[0] = dp[1] = 1
-    dp[2] = d[1] + dp[1]
-    dp[3] = dp[2] + dp[1] = dp[1] + dp[1] + dp[1]
-    dp[4] = d[3] + d[1] = 
+    return "a".repeat(n - 1) + (n % 2 == 1 ? "a" : "b");
  };
 // @lc code=end
 
