@@ -9,7 +9,7 @@ object Solution {
     def longestCommonPrefix(strs: Array[String]): String = {
         if (strs.length <= 0) return ""
         var prefix = ""
-        var firstElem = strs[0]
+        var firstElem = strs(0)
         var tmp = ""
         for (s <- firstElem) {
             tmp += s
