@@ -59,44 +59,18 @@ var isBadVersion = function(version) {
  * @return {function}
  */
 var solution = function (isBadVersion) {
-    /**
-     * @param {integer} n Total versions
-     * @return {integer} The first bad version
-     */
-    return function (n) {
-        let k = Math.floor((2 * n) ** 0.5)
-        let pos = 1
-        let forward = true
-        while (k > 0) {
-            /// 1. 找到true
-            pos = forward ? pos + k : pos - k
-
-            let checkVal = isBadVersion(pos)
-            /// 2. 修改step策略从步进为k修改到步进为1
-            if (forward == true) {
-                if (checkVal == false) {
-                    k--
-                    if(n<pos+k){
-                        k = Math.floor((2 * (n-pos)) ** 0.5)
-                    }
-                } else {
-                    k = 1
-                    forward = false
-                }
+    return function(n) {
+        let left = 1, right = n;
+        while (left < right) { // 循环直至区间左右端点相同
+            const mid = Math.floor(left + (right - left) / 2); // 防止计算时溢出
+            if (isBadVersion(mid)) {
+                right = mid; // 答案在区间 [left, mid] 中
             } else {
-                if(checkVal == false){
-                    /// 找到答案,终止搜索
-                    k = 0
-                    pos = pos + 1
-                } else{
-                    if(pos < 1){
-                        pos = 1
-                        break
-                    }
-                }
+                left = mid + 1; // 答案在区间 [mid+1, right] 中
             }
         }
-        return pos
+        // 此时有 left == right，区间缩为一个点，即为答案
+        return left;
     };
 };
 // @lc code=end

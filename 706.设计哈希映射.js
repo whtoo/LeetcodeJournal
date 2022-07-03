@@ -55,7 +55,7 @@
  */
 var MyHashMap = function() {
     this.maxBucktes = 1000037;
-    this.buckets = new Array(10e6).fill(-1)
+    this.buckets = new Array(10e3).fill(-1)
 };
 
 /**
