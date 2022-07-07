@@ -32,33 +32,57 @@
  * @return {string}
  */
 var reverseWords = function(s) {
-    let reverseStr = ""
-    for(let i =0,j =0; i < s.length;){
-        const ch  = s[i+j]
-        let next = -1        
-        if(ch == " " || !ch){
-            if(j > 0){
-                next = j
-                j--
-                while(j >= 0){
-                    reverseStr = reverseStr + s[i+j]
-                    j--
-                }
-                i += next
-                j = 0
-                reverseStr += (i+j < s.length)?s[i]:""
-                i++
-            } else{
-                i++
-            }
-        } else {
-            if(i+j < s.length){
-                j++
-            }
+    // let reverseStr = ""
+    // for(let i =0,j =0; i < s.length;){
+    //     const ch  = s[i+j]
+    //     let next = -1        
+    //     if(ch == " " || !ch){
+    //         if(j > 0){
+    //             next = j
+    //             j--
+    //             while(j >= 0){
+    //                 reverseStr = reverseStr + s[i+j]
+    //                 j--
+    //             }
+    //             i += next
+    //             j = 0
+    //             reverseStr += (i+j < s.length)?s[i]:""
+    //             i++
+    //         } else{
+    //             i++
+    //         }
+    //     } else {
+    //         if(i+j < s.length){
+    //             j++
+    //         }
+    //     }
+    // }
+
+    // return reverseStr
+
+    let reverseWordsInRange = (str,start,end) => {
+        var tmp = ''
+        var mut = str
+        console.log(start,end)
+        for(var i = start,j = end;i < j;i++,j--){
+            tmp = str[i]
+            console.log('exchange ',str[i],str[j])
+            mut[i] = str[j]
+            mut[j] = tmp
         }
+        return mut
     }
 
-    return reverseStr
+    for(var i = 0,j = 0; i < s.length;i++){
+        // Detect space 
+        if(s[i] == ' ' || i == s.length - 1){
+            let offset = (i == s.length - 1) ? 0 : 1
+            reverseWordsInRange(s,j,i-offset)
+            j = i+1
+            continue
+        }
+    }
+    return s
 };
 // @lc code=end
-console.log(reverseWords(" "))
+console.log(reverseWords("Let's take LeetCode contest"))
